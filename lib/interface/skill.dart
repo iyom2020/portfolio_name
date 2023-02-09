@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Skill{
+class Skill {
   final Image icon;
   final String name;
   final int rank;

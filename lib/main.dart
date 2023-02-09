@@ -9,7 +9,7 @@ Future<void> main() async {
   usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -20,6 +20,10 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
+      routerDelegate: ref.watch(routerProvider).routerDelegate,
+      routeInformationParser: ref.watch(routerProvider).routeInformationParser,
+      routeInformationProvider:
+          ref.watch(routerProvider).routeInformationProvider,
       title: "KOSHIRO's portfolio",
       theme: ThemeData(
         primarySwatch: Colors.indigo,
@@ -37,8 +41,6 @@ class MyApp extends ConsumerWidget {
           ),
         ),
       ),
-      routerDelegate: ref.watch(routerProvider).routerDelegate,
-      routeInformationParser: ref.watch(routerProvider).routeInformationParser,
     );
   }
 }
