@@ -37,16 +37,6 @@ final routerProvider = Provider((ref) => GoRouter(
             return null;
           },
         ),
-        GoRoute(
-          path: '/test',
-          builder: (context, state) => const TopView(),
-          routes: [
-            GoRoute(
-              path: 'admin_top',
-              builder: (context, state) => const AdminTopView(),
-            ),
-          ],
-        ),
       ],
       // redirect: (_,state) {
       //   final isLoggedIn = ref.read(loginInfoProvider);

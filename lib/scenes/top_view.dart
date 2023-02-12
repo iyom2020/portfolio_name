@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:portfolio_name/component/tag/tag_view.dart';
 import 'package:portfolio_name/interface/skill.dart';
+import 'package:portfolio_name/interface/work.dart';
 import 'package:portfolio_name/provider/login_info_provider.dart';
 import 'package:portfolio_name/provider/skill_language_list_provider.dart';
 import 'package:portfolio_name/provider/skill_tool_list_provider.dart';
+import 'package:portfolio_name/provider/work_state_provider.dart';
 import 'package:portfolio_name/util/image_util.dart';
 
 class TopView extends ConsumerStatefulWidget {
@@ -19,6 +22,8 @@ class _TopViewState extends ConsumerState<TopView> {
   late final List<Skill> _languageState = ref.watch(skillLanguageListProvider);
   late final List<Skill> _toolState = ref.watch(skillToolListProvider);
   late Skill _selectedSkill = _languageState[0];
+  late final List<Work> _workState = ref.watch(workStateProvider);
+  late Work _selectedWork = _workState[0];
 
   @override
   void initState() {
@@ -553,63 +558,37 @@ class _TopViewState extends ConsumerState<TopView> {
     );
   }
 
+
+  /// WORKS
   Widget _works() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          /// ABOUT画像
-          Stack(
-            alignment: AlignmentDirectional.center,
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(
-                      MediaQuery.of(context).size.width / 12),
-                ),
-                width: MediaQuery.of(context).size.width / 3 * 2,
-                child: Opacity(
-                  opacity: 0.5,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                          MediaQuery.of(context).size.width / 8),
-                      child: NetworkImageBuilder(
-                          ImageUtil().imgDownloadPath("general/works.jpg"))),
-                ),
-              ),
-              Text(
-                "WORKS",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width / 18,
-                  letterSpacing: MediaQuery.of(context).size.width / 70,
-                ),
-              ),
-            ],
-          ),
-
-          SizedBox(
-            height: MediaQuery.of(context).size.width / 15,
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              /// ABOUT画像
+              /// WORKS画像
               Stack(
                 alignment: AlignmentDirectional.center,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width / 3,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                            MediaQuery.of(context).size.width / 12),
-                        child: NetworkImageBuilder(
-                            ImageUtil().imgDownloadPath("general/about.jpg"))),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(
+                          MediaQuery.of(context).size.width / 12),
+                    ),
+                    width: MediaQuery.of(context).size.width / 3 * 2,
+                    child: Opacity(
+                      opacity: 0.5,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              MediaQuery.of(context).size.width / 8),
+                          child: NetworkImageBuilder(
+                              ImageUtil().imgDownloadPath("general/works.jpg"))),
+                    ),
                   ),
                   Text(
-                    "ABOUT",
+                    "WORKS",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: MediaQuery.of(context).size.width / 18,
@@ -620,54 +599,196 @@ class _TopViewState extends ConsumerState<TopView> {
               ),
 
               SizedBox(
-                width: MediaQuery.of(context).size.width / 10,
+                height: MediaQuery.of(context).size.width / 15,
               ),
 
-              /// 自己紹介文
-              Container(
-                width: MediaQuery.of(context).size.width / 5 * 2,
-                child: RichText(
-                  text: TextSpan(
-                    style: Theme.of(context).textTheme.bodyText1,
-                    children: [
-                      TextSpan(
-                        text: "小代翔大",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize:
-                              (MediaQuery.of(context).size.width / 40 < 32)
-                                  ? 32
-                                  : MediaQuery.of(context).size.width / 40,
-                          letterSpacing: MediaQuery.of(context).size.width / 70,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "(Koshiro Shota)\n",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize:
-                              (MediaQuery.of(context).size.width / 45 < 26)
-                                  ? 26
-                                  : MediaQuery.of(context).size.width / 45,
-                        ),
-                      ),
-                      const TextSpan(
-                        text: "Flutterエンジニア\n\n",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      const TextSpan(
-                        text: "Flutterに魅了されたエンジニアです。\n"
-                            "近畿大学理工学部情報学科に在籍。2023年4月より4年生となります。\n\n"
-                            "プログラミングとは中学3年生の頃からの付き合い。\n"
-                            "初めてのプログラミング言語はHSP(Hot Soup Processor)でした。\n\n"
-                            "AR/XRに強く興味があり、今は関連技術の習得に必死です。",
-                      ),
-                    ],
+              // Wrap(
+              //   children: (){
+              //     List<Widget> list = [];
+              //     print("WORKSの数：${_workState.length}");
+              //     for(Work work in _workState){
+              //       list.add(
+              //           SizedBox(
+              //             // width: 100,
+              //             height: 500,
+              //             child: InkWell(
+              //               onTap: () {
+              //                 setState(() {
+              //                   _selectedWork = work;
+              //                 });
+              //               },
+              //               child: _workIcon(work),
+              //             ),
+              //           )
+              //       );
+              //     }
+              //     return list;
+              //   }()
+              // ),
+
+              SizedBox(
+                height: 600,
+                width: MediaQuery.of(context).size.width / 15 * 11,
+                child: GridView.builder(
+                  gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 0.7,
+                    // 横1行あたりに表示するWidgetの数
+                    crossAxisCount:
+                    ((MediaQuery.of(context).size.width / 15 * 11) /
+                        200)
+                        .toInt(),
+                    // Widget間のスペース（左右）
+                    mainAxisSpacing: 15,
+                    // Widget間のスペース（上下）
+                    crossAxisSpacing: 15,
                   ),
+                  padding: const EdgeInsets.all(4),
+                  itemCount: ref.watch(workStateProvider).length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        setState(() {
+                          _selectedWork = _workState[index];
+                        });
+                      },
+                      child: SizedBox(height: 500,child: _workIcon(_workState[index])),
+                    );
+                  },
                 ),
               ),
+
+              (ref.watch(workStateProvider).isNotEmpty) ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// サムネイル
+                  Container(
+                    width: MediaQuery.of(context).size.width / 5*2,
+                    // height: MediaQuery.of(context).size.width / 3,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: NetworkImageBuilder(ImageUtil().imgDownloadPath(_selectedWork.imagePath))),
+                  ),
+
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 20,
+                  ),
+
+                  /// WORK詳細
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _selectedWork.name,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize:
+                            (MediaQuery.of(context).size.width / 40 < 32)
+                                ? 32
+                                : MediaQuery.of(context).size.width / 40,
+                            letterSpacing: MediaQuery.of(context).size.width / 80,
+                          ),
+                        ),
+
+                        /// 作品タグ表示
+                        Wrap(
+                            children: (){
+                              List<Widget> list = [];
+                              _selectedWork.tags.forEach((tag) {
+                                list.add(Padding(
+                                  padding: const EdgeInsets.only(bottom: 5,right: 5),
+                                  child: TagView(tag, null),
+                                ));
+                              });
+                              return list;
+                            }()
+                        ),
+
+                        /// 作品タグ表示
+                        Wrap(
+                            children: (){
+                              List<Widget> list = [];
+                              _selectedWork.stacks.forEach((stack) {
+                                list.add(Padding(
+                                  padding: const EdgeInsets.only(bottom: 5,right: 5),
+                                  child: TagView(stack, Colors.indigoAccent),
+                                ));
+                              });
+                              return list;
+                            }()
+                        ),
+
+                        SizedBox(height: 20,),
+
+                        Text(_selectedWork.text,style: Theme.of(context).textTheme.bodyText1,)
+
+                      ],
+                    ),
+                  ),
+                ],
+              ):Container(),
             ],
           ),
+        );
+      }
+    );
+  }
+
+  Widget _workIcon(Work work) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          /// サムネイル
+          Container(
+            width: 180,
+            height: 120,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: NetworkImageBuilder(ImageUtil().imgDownloadPath(work.imagePath)),
+            ),
+          ),
+
+          /// フレームワーク/言語名
+          Text(
+            work.name,
+            style: const TextStyle(color: Colors.white,fontSize: 16),
+          ),
+
+          const SizedBox(height: 4,),
+
+          /// 作品タグ表示
+          Wrap(
+            children: (){
+              List<Widget> list = [];
+              work.tags.forEach((tag) {
+                list.add(Padding(
+                  padding: const EdgeInsets.only(bottom: 5,right: 5),
+                  child: TagView(tag, null),
+                ));
+              });
+              return list;
+            }()
+          ),
+
+          const SizedBox(height: 4,),
+
+          /// 作品タグ表示
+          Wrap(
+              children: (){
+                List<Widget> list = [];
+                work.stacks.forEach((stack) {
+                  list.add(Padding(
+                    padding: const EdgeInsets.only(bottom: 5,right: 5),
+                    child: TagView(stack, Colors.indigoAccent),
+                  ));
+                });
+                return list;
+              }()
+          )
         ],
       ),
     );
