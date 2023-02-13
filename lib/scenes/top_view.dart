@@ -124,6 +124,14 @@ class _TopViewState extends ConsumerState<TopView> {
           SizedBox(
             height: MediaQuery.of(context).size.width / 10,
           ),
+          _blog(),
+          SizedBox(
+            height: MediaQuery.of(context).size.width / 10,
+          ),
+          _contact(),
+          SizedBox(
+            height: MediaQuery.of(context).size.width / 10,
+          ),
         ],
       ),
     );
@@ -794,7 +802,217 @@ class _TopViewState extends ConsumerState<TopView> {
     );
   }
 
-  Widget _() {
-    return Container();
+  /// BLOG
+  Widget _blog() {
+    Color hoverColor = Colors.black26;
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          /// BLOG画像
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width / 12),
+                ),
+                width: MediaQuery.of(context).size.width / 3,
+                child: Opacity(
+                  opacity: 0.5,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          MediaQuery.of(context).size.width / 12),
+                      child: NetworkImageBuilder(
+                          ImageUtil().imgDownloadPath("general/blog.jpg"))),
+                ),
+              ),
+              Text(
+                "BLOG",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.width / 18,
+                  letterSpacing: MediaQuery.of(context).size.width / 70,
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 10,
+          ),
+
+          /// 説明文
+          Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width / 3,
+                child: Text(
+                  "他愛のない日常をお送りします。\n"
+                  "不定期更新ですが、長く暖かい目で待って下さいませ。",
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    height: 3,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 30,
+              ),
+
+              StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return InkWell(
+                      onTap: () {
+
+                      },
+                      onHover: (isHover){
+                        setState((){
+                          if(isHover){
+                            hoverColor = Colors.black54;
+                          }else{
+                            hoverColor = Colors.black26;
+                          }
+                        });
+                      },
+                      child: Container(
+                        width: 200,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: hoverColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "ブログページはこちら",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              letterSpacing: 3,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _contact() {
+    Color hoverColor = Colors.black26;
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          /// 説明文
+          Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width / 3,
+                child: Text(
+                  "ご連絡はこちらよりお待ちしております。\n"
+                      "どんな内容でも構いません。お気軽にどうぞ。"
+                      ,
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    height: 3,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 30,
+              ),
+
+              StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return InkWell(
+                      onTap: () {
+
+                      },
+                      onHover: (isHover){
+                        setState((){
+                          if(isHover){
+                            hoverColor = Colors.black54;
+                          }else{
+                            hoverColor = Colors.black26;
+                          }
+                        });
+                      },
+                      child: Container(
+                        width: 200,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: hoverColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "お問い合わせ",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              letterSpacing: 3,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+              ),
+            ],
+          ),
+
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 10,
+          ),
+
+          /// BLOG画像
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width / 12),
+                ),
+                width: MediaQuery.of(context).size.width / 3,
+                child: Opacity(
+                  opacity: 0.5,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          MediaQuery.of(context).size.width / 12),
+                      child: NetworkImageBuilder(
+                          ImageUtil().imgDownloadPath("general/contact.jpg"))),
+                ),
+              ),
+              Text(
+                "CONTACT",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.width / 18,
+                  letterSpacing: MediaQuery.of(context).size.width / 80,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
