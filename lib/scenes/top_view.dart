@@ -909,6 +909,7 @@ class _TopViewState extends ConsumerState<TopView> {
     );
   }
 
+  /// CONTACT
   Widget _contact() {
     Color hoverColor = Colors.black26;
     return Container(
@@ -981,7 +982,7 @@ class _TopViewState extends ConsumerState<TopView> {
             width: MediaQuery.of(context).size.width / 10,
           ),
 
-          /// BLOG画像
+          /// CONTACT画像
           Stack(
             alignment: AlignmentDirectional.center,
             children: [

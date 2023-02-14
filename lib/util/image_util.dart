@@ -41,6 +41,11 @@ class ImageUtil {
     // if(uint8list != null) file = File.fromRawPath(uint8list);
     return uint8list;
   }
+
+  Future<void> deletePicture(String imgPath) async{
+    final storageReference = FirebaseStorage.instance.ref();
+    await storageReference.child(imgPath).delete();
+  }
 }
 
 class NetworkImageBuilder extends FutureBuilder {

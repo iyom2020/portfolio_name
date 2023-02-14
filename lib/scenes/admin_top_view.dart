@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portfolio_name/component/button/admin_top_gesture_detector.dart';
 import 'package:portfolio_name/scenes/admin_create_work_view.dart';
+import 'package:portfolio_name/scenes/admin_list_work_view.dart';
 
 final adminTopIndexProvider = StateProvider<int>((ref) => 0);
 
@@ -70,6 +71,9 @@ class AdminTopView extends ConsumerWidget {
           child: (() {
             if (chooseIndex == 0) {
               return const AdminCreateWorkView();
+            }
+            if (chooseIndex == 1) {
+              return const AdminListWorkView();
             }
             return Container();
           }()),
