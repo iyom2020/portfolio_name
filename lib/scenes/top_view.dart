@@ -9,6 +9,8 @@ import 'package:portfolio_name/provider/skill_language_list_provider.dart';
 import 'package:portfolio_name/provider/skill_tool_list_provider.dart';
 import 'package:portfolio_name/provider/work_state_provider.dart';
 import 'package:portfolio_name/util/image_util.dart';
+import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TopView extends ConsumerStatefulWidget {
   const TopView({Key? key}) : super(key: key);
@@ -24,11 +26,7 @@ class _TopViewState extends ConsumerState<TopView> {
   late Skill _selectedSkill = _languageState[0];
   late final List<Work> _workState = ref.watch(workStateProvider);
   late Work _selectedWork = _workState[0];
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -940,9 +938,12 @@ class _TopViewState extends ConsumerState<TopView> {
 
               StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
+                    final Uri _url = Uri.parse('https://docs.google.com/forms/d/e/1FAIpQLSc84sNiDeRzaKkcrlCQmQiL4oqB6RVYIWiXbr9NZR9ZFr-7zg/viewform?usp=sf_link');
                     return InkWell(
-                      onTap: () {
-
+                      onTap: ()async{
+                        if (!await launchUrl(_url)) {
+                          throw Exception('$_url は開けません');
+                        }
                       },
                       onHover: (isHover){
                         setState((){

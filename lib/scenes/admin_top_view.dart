@@ -17,7 +17,7 @@ class AdminTopView extends ConsumerWidget {
         backgroundColor: Colors.indigo,
         leading: IconButton(
           onPressed: () {
-            context.pop;
+            context.go("/top");
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),

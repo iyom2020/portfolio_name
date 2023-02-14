@@ -734,7 +734,9 @@ class _AdminEditWorkViewState extends ConsumerState<AdminEditWorkView> {
           onConfirm: () async {
             await dbInstance.collection('works').doc(workId).delete();
             await ImageUtil().deletePicture('works/$workId/mainImage');
-            context.go("/admin");
+            // setState(() {
+              context.go("/top");
+            // });
           },
         );
       },

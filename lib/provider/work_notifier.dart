@@ -17,6 +17,7 @@ class WorkNotifier extends StateNotifier<List<Work>> {
     final snapshot = store.collection("works").orderBy('createdAt').snapshots();
     snapshot.listen((querySnapshot) {
       state = [];
+      list = [];
       querySnapshot.docs.forEach((QueryDocumentSnapshot documentSnapshot) {
         list.add(Work(
           createdAt: documentSnapshot.get("createdAt") as Timestamp,
