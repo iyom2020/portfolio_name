@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portfolio_name/component/button/admin_top_gesture_detector.dart';
+import 'package:portfolio_name/scenes/admin_create_blog_view.dart';
 import 'package:portfolio_name/scenes/admin_create_work_view.dart';
 import 'package:portfolio_name/scenes/admin_list_work_view.dart';
 
@@ -54,7 +55,7 @@ class AdminTopView extends ConsumerWidget {
                   widthSize: MediaQuery.of(context).size.width / 3,
                 ).create(context, ref),
                 AdminTopGestureDetector(
-                  title: 'WORK 削除？',
+                  title: 'BLOG 新規作成',
                   index: 2,
                   widthSize: MediaQuery.of(context).size.width / 3,
                 ).create(context, ref),
@@ -74,6 +75,9 @@ class AdminTopView extends ConsumerWidget {
             }
             if (chooseIndex == 1) {
               return const AdminListWorkView();
+            }
+            if (chooseIndex == 2) {
+              return const AdminCreateBlogView();
             }
             return Container();
           }()),

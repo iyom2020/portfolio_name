@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:portfolio_name/component/markdown/markdown_view.dart';
 import 'package:portfolio_name/component/popup/default_alert_dialog.dart';
 import 'package:portfolio_name/component/tag/tag_view.dart';
 import 'package:portfolio_name/util/image_util.dart';
 import 'package:portfolio_name/util/time_convert.dart';
+import 'package:universal_html/html.dart' as html;
 
 class AdminCreateWorkView extends StatefulWidget {
   const AdminCreateWorkView({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class AdminCreateWorkView extends StatefulWidget {
 class _AdminCreateWorkViewState extends State<AdminCreateWorkView> {
   final _controller1 = TextEditingController();
   final _controller2 = TextEditingController();
+  final FocusNode _focusNode1 = FocusNode();
 
   // 入力した情報
   String name = '';
@@ -26,6 +29,30 @@ class _AdminCreateWorkViewState extends State<AdminCreateWorkView> {
   List<String> stacks = [];
   String addStackWord = "";
   String workInfoText = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    webComposeEvent([_focusNode1]);
+  }
+
+  void webComposeEvent( List<FocusNode> focusNodeList,){
+    if( !kIsWeb ) return;
+
+    html.window.document.addEventListener("compositionstart", (event){
+      focusNodeList.forEach((_focusNode) {
+        if(!_focusNode.hasFocus) return;
+        _focusNode.skipTraversal = true;
+      });
+    });
+    html.window.document.addEventListener("compositionend", (event){
+      focusNodeList.forEach((_focusNode) {
+        if(!_focusNode.skipTraversal) return;
+        _focusNode.skipTraversal = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -525,6 +552,7 @@ class _AdminCreateWorkViewState extends State<AdminCreateWorkView> {
                       ),
                       (!isView)
                           ? TextFormField(
+                              focusNode: _focusNode1,
                               controller: _controller2,
                               style: const TextStyle(
                                 color: Colors.white,
@@ -570,7 +598,7 @@ class _AdminCreateWorkViewState extends State<AdminCreateWorkView> {
                                 color: Colors.black26,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Markdown(data: workInfoText),
+                              child: MarkdownView(data: workInfoText),
                             ),
                     ],
                   );
