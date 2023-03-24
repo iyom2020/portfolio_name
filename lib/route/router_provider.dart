@@ -5,6 +5,8 @@ import 'package:portfolio_name/provider/login_info_provider.dart';
 import 'package:portfolio_name/scenes/admin_list_work_view.dart';
 import 'package:portfolio_name/scenes/admin_login_view.dart';
 import 'package:portfolio_name/scenes/admin_top_view.dart';
+import 'package:portfolio_name/scenes/blog_contents_view.dart';
+import 'package:portfolio_name/scenes/blog_top_view.dart';
 import 'package:portfolio_name/scenes/top_view.dart';
 
 final routerProvider = Provider((ref) => GoRouter(
@@ -16,6 +18,22 @@ final routerProvider = Provider((ref) => GoRouter(
         GoRoute(
           path: '/top',
           builder: (context, state) => const TopView(),
+        ),
+        GoRoute(
+          path: '/blog',
+          builder: (context, state) => const BlogTopView(),
+          routes: [
+            GoRoute(
+              path: ':id',
+              builder: (BuildContext context, GoRouterState state) {
+                final blogId = state.params['id'];
+                // userId: int.parse(userId!),
+                return BlogContentsView(
+                  blog_id:int.parse(blogId!),
+                );
+              },
+            ),
+          ]
         ),
         GoRoute(
           path: '/login',

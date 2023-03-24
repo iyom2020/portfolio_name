@@ -9,7 +9,6 @@ import 'package:portfolio_name/provider/skill_language_list_provider.dart';
 import 'package:portfolio_name/provider/skill_tool_list_provider.dart';
 import 'package:portfolio_name/provider/work_state_provider.dart';
 import 'package:portfolio_name/util/image_util.dart';
-import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TopView extends ConsumerStatefulWidget {
@@ -867,7 +866,7 @@ class _TopViewState extends ConsumerState<TopView> {
                   builder: (BuildContext context, StateSetter setState) {
                     return InkWell(
                       onTap: () {
-
+                        context.go("/blog");
                       },
                       onHover: (isHover){
                         setState((){
