@@ -41,6 +41,7 @@ class MyApp extends ConsumerWidget {
           ),
         ),
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

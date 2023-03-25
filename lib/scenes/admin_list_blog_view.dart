@@ -1,54 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:portfolio_name/component/tag/tag_view.dart';
 import 'package:portfolio_name/interface/blog.dart';
+import 'package:portfolio_name/interface/work.dart';
 import 'package:portfolio_name/provider/blog_state_provider.dart';
+import 'package:portfolio_name/scenes/admin_edit_blog_view.dart';
 import 'package:portfolio_name/util/image_util.dart';
-import 'package:portfolio_name/util/time_convert.dart';
 
-class BlogTopView extends ConsumerStatefulWidget {
-  const BlogTopView({Key? key}) : super(key: key);
+final editBlogProvider = StateProvider<Blog?>((ref) => null);
+
+class AdminListBlogView extends ConsumerStatefulWidget {
+  const AdminListBlogView({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<BlogTopView> createState() => _BlogTopViewState();
+  ConsumerState<AdminListBlogView> createState() => _AdminListBlogViewState();
 }
 
-class _BlogTopViewState extends ConsumerState<BlogTopView> {
+class _AdminListBlogViewState extends ConsumerState<AdminListBlogView> {
+  late List<Blog> _blogState;
+  late Blog _selectedBlog = _blogState[0];
+  bool isList = true;
 
   @override
   Widget build(BuildContext context) {
-    final List<Blog> _blogState = ref.watch(blogStateProvider);
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: MediaQuery.of(context).size.width / 15,
-        backgroundColor: Colors.white.withOpacity(0),
-        shadowColor: Colors.white.withOpacity(0),
-        leading: IconButton(
-          onPressed: () {
-            context.go("/top");
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-        centerTitle: true,
-        title: Text(
-          "BLOG一覧",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: MediaQuery.of(context).size.width / 20,
-            letterSpacing: MediaQuery.of(context).size.width / 70,
-          ),),
+    _blogState = ref.watch(blogStateProvider);
+    return (isList) ? _blogListView() : _blogEditView();
+  }
+
+  Widget _blogEditView(){
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          InkWell(
+            onTap: (){
+              setState(() {
+                _blogState = ref.watch(blogStateProvider);
+                isList = true;
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: double.infinity - 60),
+              child: SizedBox(width:50, height:50, child: Icon(Icons.arrow_back_outlined,size: 50,color: Colors.white,)),
+            ),
+          ),
+          AdminEditBlogView(_selectedBlog),
+        ],
       ),
-      body: ListView.builder(
+    );
+  }
+
+  Widget _blogListView(){
+    return ListView.builder(
         itemCount: _blogState.length,
         itemBuilder: (BuildContext context, int index){
           return Padding(
             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
             child: InkWell(
               onTap: (){
-                final blogId = TimeConvert(_blogState[index].createdAt);
-                context.go("/blog/$blogId");
+                setState(() {
+                  print("BLOGを押したよ");
+                  _selectedBlog = _blogState[index];
+                  isList = false;
+                });
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -104,11 +118,6 @@ class _BlogTopViewState extends ConsumerState<BlogTopView> {
                               return list;
                             }()
                         ),
-
-                        // SizedBox(height: 20,),
-
-                        // Text(_blogState[index].text,style: Theme.of(context).textTheme.bodyText1,)
-
                       ],
                     ),
                   ),
@@ -117,7 +126,6 @@ class _BlogTopViewState extends ConsumerState<BlogTopView> {
             ),
           );
         }
-      ),
     );
   }
 }

@@ -29,7 +29,7 @@ final routerProvider = Provider((ref) => GoRouter(
                 final blogId = state.params['id'];
                 // userId: int.parse(userId!),
                 return BlogContentsView(
-                  blog_id:int.parse(blogId!),
+                  blogId:int.parse(blogId!),
                 );
               },
             ),

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:portfolio_name/component/button/admin_top_gesture_detector.dart';
 import 'package:portfolio_name/scenes/admin_create_blog_view.dart';
 import 'package:portfolio_name/scenes/admin_create_work_view.dart';
+import 'package:portfolio_name/scenes/admin_list_blog_view.dart';
 import 'package:portfolio_name/scenes/admin_list_work_view.dart';
 
 final adminTopIndexProvider = StateProvider<int>((ref) => 0);
@@ -50,7 +51,7 @@ class AdminTopView extends ConsumerWidget {
                   widthSize: MediaQuery.of(context).size.width / 3,
                 ).create(context, ref),
                 AdminTopGestureDetector(
-                  title: 'WORK 変更',
+                  title: 'WORK 編集',
                   index: 1,
                   widthSize: MediaQuery.of(context).size.width / 3,
                 ).create(context, ref),
@@ -60,8 +61,13 @@ class AdminTopView extends ConsumerWidget {
                   widthSize: MediaQuery.of(context).size.width / 3,
                 ).create(context, ref),
                 AdminTopGestureDetector(
-                  title: 'ログアウト',
+                  title: 'BLOG 編集',
                   index: 3,
+                  widthSize: MediaQuery.of(context).size.width / 3,
+                ).create(context, ref),
+                AdminTopGestureDetector(
+                  title: 'ログアウト',
+                  index: 4,
                   widthSize: MediaQuery.of(context).size.width / 3,
                   titleColor: Colors.red,
                 ).create(context, ref),
@@ -78,6 +84,9 @@ class AdminTopView extends ConsumerWidget {
             }
             if (chooseIndex == 2) {
               return const AdminCreateBlogView();
+            }
+            if (chooseIndex == 3) {
+              return const AdminListBlogView();
             }
             return Container();
           }()),

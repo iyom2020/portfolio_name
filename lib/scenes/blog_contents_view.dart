@@ -7,13 +7,14 @@ import 'package:portfolio_name/component/tag/tag_view.dart';
 import 'package:portfolio_name/interface/blog.dart';
 import 'package:portfolio_name/provider/blog_state_provider.dart';
 import 'package:portfolio_name/util/image_util.dart';
+import 'package:portfolio_name/util/time_convert.dart';
 
 class BlogContentsView extends ConsumerStatefulWidget {
-  final int blog_id;
+  final int blogId;
   // const BlogContentsView(this.blog_id, {Key? key}) : super(key: key);
   const BlogContentsView({
     super.key,
-    required this.blog_id,
+    required this.blogId,
   });
 
   @override
@@ -22,6 +23,7 @@ class BlogContentsView extends ConsumerStatefulWidget {
 
 class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
   late final List<Blog> _blogState = ref.watch(blogStateProvider);
+  late Blog selectedBlog;
   @override
   Widget build(BuildContext context) {
     // final List<Blog> _blogState = ref.watch(blogStateProvider);
@@ -38,8 +40,20 @@ class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
         ),
       ),
       /// TODO 404対応する
-      body: _body()
+      body: (existBlog(widget.blogId)) ? _body() : null,
+      // body: _body()
     );
+  }
+
+  bool existBlog(int blogId){
+    bool check = false;
+    _blogState.forEach((blog) {
+      if(TimeConvert(blog.createdAt) == blogId.toString()){
+        check = true;
+        selectedBlog = blog;
+      }
+    });
+    return check;
   }
 
   Widget _body(){
@@ -55,7 +69,7 @@ class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
             children: [
               const SizedBox(height:20),
               Text(
-                _blogState[widget.blog_id].title,
+                selectedBlog.title,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize:
@@ -73,7 +87,7 @@ class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      DateFormat('yyyy-MM-dd').format(_blogState[widget.blog_id].createdAt.toDate()),
+                      DateFormat('yyyy-MM-dd').format(selectedBlog.createdAt.toDate()),
                       style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.grey),
                     ),
 
@@ -81,7 +95,7 @@ class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
                     Wrap(
                         children: (){
                           List<Widget> list = [];
-                          _blogState[widget.blog_id].tags.forEach((tag) {
+                          selectedBlog.tags.forEach((tag) {
                             list.add(Padding(
                               padding: const EdgeInsets.only(bottom: 5,right: 5),
                               child: TagView(tag, null),
@@ -99,7 +113,7 @@ class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
               /// サムネイル
               ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: NetworkImageBuilder(ImageUtil().imgDownloadPath(_blogState[widget.blog_id].imagePath))
+                  child: NetworkImageBuilder(ImageUtil().imgDownloadPath(selectedBlog.imagePath))
               ),
 
               const SizedBox(height:20),
@@ -108,7 +122,7 @@ class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
                 width: MediaQuery.of(context).size.width / 3 * 2,
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height,
-                    child: MarkdownView(data: _blogState[widget.blog_id].text),
+                    child: MarkdownView(data: selectedBlog.text),
                 ),
               ),
             ],

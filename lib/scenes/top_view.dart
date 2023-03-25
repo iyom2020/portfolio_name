@@ -61,6 +61,59 @@ class _TopViewState extends ConsumerState<TopView> {
       endDrawer: Drawer(
         child: Column(
           children: [
+            InkWell(
+              onTap: () {
+                context.go("/blog");
+              },
+              child: Container(
+                height: 50,
+                decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey,
+                        width: 2,
+                      ),
+                    )),
+                child: const Center(
+                  child: Text(
+                    "BLOG PAGE",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () async{
+                final Uri _url = Uri.parse('https://docs.google.com/forms/d/e/1FAIpQLSc84sNiDeRzaKkcrlCQmQiL4oqB6RVYIWiXbr9NZR9ZFr-7zg/viewform?usp=sf_link');
+                if (!await launchUrl(_url)) {
+                  throw Exception('$_url は開けません');
+                }
+              },
+              child: Container(
+                height: 50,
+                decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey,
+                        width: 2,
+                      ),
+                    )),
+                child: const Center(
+                  child: Text(
+                    "CONTACT",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
             (ref.watch(loginInfoProvider.notifier).state)
                 ? InkWell(
                     onTap: () {

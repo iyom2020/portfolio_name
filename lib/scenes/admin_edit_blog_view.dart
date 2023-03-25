@@ -2,21 +2,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:portfolio_name/component/markdown/markdown_view.dart';
 import 'package:portfolio_name/component/popup/default_alert_dialog.dart';
 import 'package:portfolio_name/component/tag/tag_view.dart';
+import 'package:portfolio_name/interface/blog.dart';
 import 'package:portfolio_name/util/image_util.dart';
 import 'package:portfolio_name/util/time_convert.dart';
 import 'package:universal_html/html.dart' as html;
 
-class AdminCreateBlogView extends StatefulWidget {
-  const AdminCreateBlogView({Key? key}) : super(key: key);
+class AdminEditBlogView extends ConsumerStatefulWidget {
+  const AdminEditBlogView(this.blog, {Key? key}) : super(key: key);
+  final Blog blog;
 
   @override
-  State<AdminCreateBlogView> createState() => _AdminCreateBlogViewState();
+  ConsumerState<AdminEditBlogView> createState() => _AdminEditBlogViewState();
 }
 
-class _AdminCreateBlogViewState extends State<AdminCreateBlogView> {
+class _AdminEditBlogViewState extends ConsumerState<AdminEditBlogView> {
   final _controller1 = TextEditingController();
   final _controller2 = TextEditingController();
   final FocusNode _focusNode1 = FocusNode();
@@ -30,9 +34,13 @@ class _AdminCreateBlogViewState extends State<AdminCreateBlogView> {
 
   @override
   void initState() {
-    super.initState();
-
+    title = widget.blog.title;
+    tags = widget.blog.tags;
+    blogInfoText = widget.blog.text;
+    _controller1.text = widget.blog.title;
+    _controller2.text = widget.blog.text;
     webComposeEvent([_focusNode1]);
+    super.initState();
   }
 
   void webComposeEvent( List<FocusNode> focusNodeList,){
@@ -64,7 +72,7 @@ class _AdminCreateBlogViewState extends State<AdminCreateBlogView> {
             height: MediaQuery.of(context).size.height / 30,
           ),
           const Text(
-            "BLOG 新規作成",
+            "BLOG 編集",
             style: TextStyle(
               color: Colors.white,
               fontSize: 32,
@@ -143,12 +151,10 @@ class _AdminCreateBlogViewState extends State<AdminCreateBlogView> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: (infoImage == null)
-                              ? const Center(
-                              child: Icon(
-                                Icons.add_photo_alternate_outlined,
-                                size: 80,
-                                color: Colors.black26,
-                              ))
+                              ? ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: NetworkImageBuilder(ImageUtil().imgDownloadPath(widget.blog.imagePath)),
+                              )
                               : Image.memory(infoImage!),
                         ),
                       ),
@@ -466,7 +472,7 @@ class _AdminCreateBlogViewState extends State<AdminCreateBlogView> {
               ),
               child: const Center(
                 child: Text(
-                  "作成",
+                  "更新",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -479,6 +485,32 @@ class _AdminCreateBlogViewState extends State<AdminCreateBlogView> {
           ),
           const SizedBox(
             height: 30,
+          ),
+          InkWell(
+            onTap: () {
+              setState(() {
+                deleteDB();
+              });
+            },
+            child: Container(
+              width: 80,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.redAccent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                child: Text(
+                  "削除",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    letterSpacing: 3,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -509,19 +541,6 @@ class _AdminCreateBlogViewState extends State<AdminCreateBlogView> {
       );
       return;
     }
-    if (infoImage == null) {
-      showDialog<void>(
-        context: context,
-        builder: (_) {
-          return const DefaultAlertDialog(
-            title: 'サムネイルが設定されていません',
-            content: 'この項目は必須です',
-            textCancel: '戻る',
-          );
-        },
-      );
-      return;
-    }
     if (blogInfoText == "") {
       showDialog<void>(
         context: context,
@@ -536,11 +555,11 @@ class _AdminCreateBlogViewState extends State<AdminCreateBlogView> {
       return;
     }
 
-    final time = Timestamp.fromDate(DateTime.now());
+    final time = widget.blog.createdAt;
     final blogId = TimeConvert(time);
     final dbInstance = FirebaseFirestore.instance;
 
-    await ImageUtil().imgUpload('blogs/$blogId/mainImage', infoImage);
+    if(infoImage != null) await ImageUtil().imgUpload('blogs/$blogId/mainImage', infoImage);
 
     final document = <String, dynamic>{
       'blogTitle': title,
@@ -561,123 +580,134 @@ class _AdminCreateBlogViewState extends State<AdminCreateBlogView> {
         );
       },
     );
-    setState(() {
-      _controller1.clear();
-      _controller2.clear();
-      this.title = '';
-      this.infoImage = null;
-      this.tags = [];
-      addTagWord = "";
-      this.blogInfoText = "";
-    });
+  }
+
+  Future<void> deleteDB()async{
+    String blogId = TimeConvert(widget.blog.createdAt);
+    final dbInstance = FirebaseFirestore.instance;
+
+    showDialog<void>(
+      context: context,
+      builder: (_) {
+        return DefaultAlertDialog(
+          title: '本当によろしいですか？',
+          content: '削除します。この操作は取り消せません。',
+          textCancel: '戻る',
+          textConfirm: '削除する',
+          onConfirm: () async {
+            await dbInstance.collection('blogs').doc(blogId).delete();
+            await ImageUtil().deletePicture('blogs/$blogId/mainImage');
+            context.go("/top");
+          },
+        );
+      },
+    );
   }
 
   Widget addImageView(){
     List<String> imageUrl = [];
     return StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
-        return Container(
-          width: MediaQuery.of(context).size.width / 2,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
+        builder: (BuildContext context, StateSetter setState) {
+          return Container(
+            width: MediaQuery.of(context).size.width / 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
                   "画像のリンク取得",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10,),
-              ListView.separated(
-                shrinkWrap: true,
-                itemCount: imageUrl.length + 1,
-                itemBuilder: (BuildContext context, int index){
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          Uint8List? image = await ImageUtil().getPictureFile();
-                          if (image != null) {
-                            final time = Timestamp.fromDate(DateTime.now());
-                            final imgId = TimeConvert(time);
-                            await ImageUtil().imgUpload('blogs/$imgId.jpg', image);
-                            (index == imageUrl.length) ?
-                            imageUrl.add(await ImageUtil().imgDownloadPath('blogs/$imgId.jpg')) :
-                            imageUrl[index] = await ImageUtil().imgDownloadPath('blogs/$imgId.jpg');
-                            setState(() {
-                              // infoImage = image;
-                            });
-                          }
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 6,
-                          height: MediaQuery.of(context).size.width / 9,
-                          decoration: BoxDecoration(
-                            color: Colors.white60,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: (index == imageUrl.length)
-                              ? const Center(
-                              child: Icon(
-                                Icons.add_photo_alternate_outlined,
-                                size: 50,
-                                color: Colors.black26,
-                              ))
-                              : Image.network(imageUrl[index]),
-                        ),
-                      ),
-                      const SizedBox(width: 10,),
-                      Stack(
-                        alignment: Alignment.centerRight,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width/3 - 10,
+                const SizedBox(height: 10,),
+                ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: imageUrl.length + 1,
+                  itemBuilder: (BuildContext context, int index){
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            Uint8List? image = await ImageUtil().getPictureFile();
+                            if (image != null) {
+                              final time = Timestamp.fromDate(DateTime.now());
+                              final imgId = TimeConvert(time);
+                              await ImageUtil().imgUpload('blogs/$imgId.jpg', image);
+                              (index == imageUrl.length) ?
+                              imageUrl.add(await ImageUtil().imgDownloadPath('blogs/$imgId.jpg')) :
+                              imageUrl[index] = await ImageUtil().imgDownloadPath('blogs/$imgId.jpg');
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 6,
+                            height: MediaQuery.of(context).size.width / 9,
                             decoration: BoxDecoration(
-                              color: Colors.black26,
+                              color: Colors.white60,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                              child: SelectableText(
-                                (index == imageUrl.length) ? "" : '![](${imageUrl[index]})',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .caption
-                                    ?.copyWith(
-                                  fontSize: 16,
-                                  color: Colors.white,
+                            child: (index == imageUrl.length)
+                                ? const Center(
+                                child: Icon(
+                                  Icons.add_photo_alternate_outlined,
+                                  size: 50,
+                                  color: Colors.black26,
+                                ))
+                                : Image.network(imageUrl[index]),
+                          ),
+                        ),
+                        const SizedBox(width: 10,),
+                        Stack(
+                          alignment: Alignment.centerRight,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width/3 - 10,
+                              decoration: BoxDecoration(
+                                color: Colors.black26,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                child: SelectableText(
+                                  (index == imageUrl.length) ? "" : '![](${imageUrl[index]})',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption
+                                      ?.copyWith(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              final data = (index == imageUrl.length) ? const ClipboardData(text: "") : ClipboardData(text: '![](${imageUrl[index]})');
-                              Clipboard.setData(data);
-                            },
-                            tooltip: 'クリップボードにコピー',
-                            icon: const Icon(
-                              Icons.content_copy_outlined,
-                              size: 20,
-                              color: Colors.white,
+                            IconButton(
+                              onPressed: () {
+                                final data = (index == imageUrl.length) ? const ClipboardData(text: "") : ClipboardData(text: '![](${imageUrl[index]})');
+                                Clipboard.setData(data);
+                              },
+                              tooltip: 'クリップボードにコピー',
+                              icon: const Icon(
+                                Icons.content_copy_outlined,
+                                size: 20,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index){
-                  return const SizedBox(height: 10);
-                },
-              ),
-            ],
-          ),
-        );
-      }
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index){
+                    return const SizedBox(height: 10);
+                  },
+                ),
+              ],
+            ),
+          );
+        }
     );
   }
 }
