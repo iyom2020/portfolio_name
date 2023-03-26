@@ -9,20 +9,21 @@ final skillToolListProvider = StateProvider<List<Skill>>((ref) {
         name: "Firebase",
         rank: 3,
         text: "アプリ制作時に使うDB、OAuthとして重宝しています。\n"
+            "本サイトもFirebase Hostingでデプロイしています。\n"
             "ネイティブアプリ(Android/iOS)やWebアプリはもちろん、Chrome拡張の開発経験もあります。"),
     Skill(
         icon: Image.asset('assets/git-logo.png'),
         name: "Git",
         rank: 4,
-        text: "大学で1年の頃から学びました。\n"
-            "Javaを通してオブジェクト指向設計やデザインパターンについて学習しました。"),
+        text: "人並みには使えます。\n"
+            "基本的にGUIツールよりコマンドの方が使いやすいなと思っています。"),
     Skill(
         icon: Image.asset('assets/github-logo.png'),
         name: "GitHub",
         rank: 4,
-        text: "ハッカソンにて自然言語処理を行うために学び始めました。\n"
-            "このときに制作したのが「しらべるん」です。\n"
-            "今後は競プロなどにも活かしていきたいと考えています。"),
+        text: "共同開発時のツールとしてひと通りは使えます。\n"
+            "issue管理やブランチ運用、コンフリクト解消など。\n"
+            "あとはGitHub Actionsをもっと活用できれば★5ですね。"),
     Skill(
         icon: Image.asset('assets/studioone-logo.png'),
         name: "Studio One",

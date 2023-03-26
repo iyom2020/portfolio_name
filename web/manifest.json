@@ -1,11 +1,11 @@
 {
-    "name": "portfolio_name",
-    "short_name": "portfolio_name",
+    "name": "KOSHIRO's portfolio",
+    "short_name": "KOSHIRO's portfolio",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "This is my portfolio.",
+    "description": "ポートフォリオサイト。頑張って作りました。",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
