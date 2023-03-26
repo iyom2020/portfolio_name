@@ -416,114 +416,119 @@ class _TopViewState extends ConsumerState<TopView> {
             /// SKILL一覧
             Column(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width / 5 * 2,
-                  height: MediaQuery.of(context).size.width / 4,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Text(
-                          "言語/フレームワーク",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize:
-                                (MediaQuery.of(context).size.width / 40 < 32)
-                                    ? 32
-                                    : MediaQuery.of(context).size.width / 40,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 160 *
-                              (_toolState.length /
-                                      ((MediaQuery.of(context).size.width /
-                                                  5 *
-                                                  2) /
-                                              150)
-                                          .toInt())
-                                  .ceil()
-                                  .toDouble(),
-                          // height: MediaQuery.of(context).size.width / 9 * 2 - 50,
-                          child: GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              // 横1行あたりに表示するWidgetの数
-                              crossAxisCount:
-                                  ((MediaQuery.of(context).size.width / 5 * 2) /
-                                          150)
-                                      .toInt(),
-                              // Widget間のスペース（左右）
-                              mainAxisSpacing: 15,
-                              // Widget間のスペース（上下）
-                              // crossAxisSpacing: 15,
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: 300,
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 5 * 2,
+                    height: MediaQuery.of(context).size.width / 4,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Text(
+                            "言語/フレームワーク",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize:
+                                  (MediaQuery.of(context).size.width / 40 < 32)
+                                      ? 32
+                                      : MediaQuery.of(context).size.width / 40,
                             ),
-                            padding: const EdgeInsets.all(4),
-                            itemCount: _languageState.length,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _selectedSkill = _languageState[index];
-                                    });
-                                  },
-                                  child: _skillIcon(_languageState[index]),
-                                ),
-                              );
-                            },
                           ),
-                        ),
-                        Text(
-                          "ツール/その他",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize:
-                                (MediaQuery.of(context).size.width / 40 < 32)
-                                    ? 32
-                                    : MediaQuery.of(context).size.width / 40,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 160 *
-                              (_toolState.length /
-                                      ((MediaQuery.of(context).size.width /
-                                                  5 *
-                                                  2) /
-                                              150)
-                                          .toInt())
-                                  .ceil()
-                                  .toDouble(),
-                          child: GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              // 横1行あたりに表示するWidgetの数
-                              crossAxisCount:
-                                  ((MediaQuery.of(context).size.width / 5 * 2) /
-                                          150)
-                                      .toInt(),
-                              // Widget間のスペース（左右）
-                              mainAxisSpacing: 15,
-                              // Widget間のスペース（上下）
-                              // crossAxisSpacing: 15,
+                          SizedBox(
+                            height: 160 *
+                                (_toolState.length /
+                                        ((MediaQuery.of(context).size.width /
+                                                    5 *
+                                                    2) /
+                                                150)
+                                            .toInt())
+                                    .ceil()
+                                    .toDouble(),
+                            // height: MediaQuery.of(context).size.width / 9 * 2 - 50,
+                            child: GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                // 横1行あたりに表示するWidgetの数
+                                crossAxisCount:
+                                    ((MediaQuery.of(context).size.width / 5 * 2) /
+                                            150)
+                                        .toInt(),
+                                // Widget間のスペース（左右）
+                                mainAxisSpacing: 15,
+                                // Widget間のスペース（上下）
+                                // crossAxisSpacing: 15,
+                              ),
+                              padding: const EdgeInsets.all(4),
+                              itemCount: _languageState.length,
+                              itemBuilder: (context, index) {
+                                return SizedBox(
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _selectedSkill = _languageState[index];
+                                      });
+                                    },
+                                    child: _skillIcon(_languageState[index]),
+                                  ),
+                                );
+                              },
                             ),
-                            padding: const EdgeInsets.all(4),
-                            itemCount: _toolState.length,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                // width: 100,
-                                height: 500,
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _selectedSkill = _toolState[index];
-                                    });
-                                  },
-                                  child: _skillIcon(_toolState[index]),
-                                ),
-                              );
-                            },
                           ),
-                        ),
-                      ],
+                          Text(
+                            "ツール/その他",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize:
+                                  (MediaQuery.of(context).size.width / 40 < 32)
+                                      ? 32
+                                      : MediaQuery.of(context).size.width / 40,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 160 *
+                                (_toolState.length /
+                                        ((MediaQuery.of(context).size.width /
+                                                    5 *
+                                                    2) /
+                                                150)
+                                            .toInt())
+                                    .ceil()
+                                    .toDouble(),
+                            child: GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                // 横1行あたりに表示するWidgetの数
+                                crossAxisCount:
+                                    ((MediaQuery.of(context).size.width / 5 * 2) /
+                                            150)
+                                        .toInt(),
+                                // Widget間のスペース（左右）
+                                mainAxisSpacing: 15,
+                                // Widget間のスペース（上下）
+                                // crossAxisSpacing: 15,
+                              ),
+                              padding: const EdgeInsets.all(4),
+                              itemCount: _toolState.length,
+                              itemBuilder: (context, index) {
+                                return SizedBox(
+                                  // width: 100,
+                                  height: 500,
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _selectedSkill = _toolState[index];
+                                      });
+                                    },
+                                    child: _skillIcon(_toolState[index]),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -533,32 +538,37 @@ class _TopViewState extends ConsumerState<TopView> {
                 ),
 
                 /// SKILL詳細
-                Container(
-                  width: MediaQuery.of(context).size.width / 5 * 2,
-                  height: 200,
-                  child: Card(
-                    color: Colors.black26,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        /// アイコン
-                        Container(
-                            margin: EdgeInsets.all(15),
-                            child: _skillIcon(_selectedSkill)),
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: 200,
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 5 * 2,
+                    // height: 200,
+                    child: Card(
+                      color: Colors.black26,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          /// アイコン
+                          Container(
+                              margin: EdgeInsets.all(15),
+                              child: _skillIcon(_selectedSkill)),
 
-                        /// コメント
-                        Container(
-                            width:
-                                MediaQuery.of(context).size.width / 5 * 2 - 155,
-                            margin: const EdgeInsets.only(right: 15),
-                            child: Text(
-                              _selectedSkill.text,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            )),
-                      ],
+                          /// コメント
+                          Container(
+                              width:
+                                  MediaQuery.of(context).size.width / 5 * 2 - 155,
+                              margin: const EdgeInsets.only(right: 15),
+                              child: Text(
+                                _selectedSkill.text,
+                                style: Theme.of(context).textTheme.bodyText1,
+                              )),
+                        ],
+                      ),
                     ),
                   ),
                 ),
