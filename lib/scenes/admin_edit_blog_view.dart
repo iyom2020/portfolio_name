@@ -329,6 +329,15 @@ class _AdminEditBlogViewState extends ConsumerState<AdminEditBlogView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 sectionText("本文"),
+                const SizedBox(height: 10,),
+                const SelectableText(
+                  "空白行の挿入には\n&nbsp;\nを使用すると上手くいく。",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 10,),
                 StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
                       return Column(
