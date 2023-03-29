@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:portfolio_name/component/markdown/markdown_view.dart';
 import 'package:portfolio_name/component/tag/tag_view.dart';
 import 'package:portfolio_name/interface/skill.dart';
 import 'package:portfolio_name/interface/work.dart';
@@ -744,56 +745,65 @@ class _TopViewState extends ConsumerState<TopView> {
                   ),
 
                   /// WORK詳細
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 3,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _selectedWork.name,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize:
-                            (MediaQuery.of(context).size.width / 40 < 32)
-                                ? 32
-                                : MediaQuery.of(context).size.width / 40,
-                            letterSpacing: MediaQuery.of(context).size.width / 80,
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.width / 4,
+                    ),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _selectedWork.name,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize:
+                              (MediaQuery.of(context).size.width / 40 < 32)
+                                  ? 32
+                                  : MediaQuery.of(context).size.width / 40,
+                              letterSpacing: MediaQuery.of(context).size.width / 80,
+                            ),
                           ),
-                        ),
 
-                        /// 作品タグ表示
-                        Wrap(
-                            children: (){
-                              List<Widget> list = [];
-                              _selectedWork.tags.forEach((tag) {
-                                list.add(Padding(
-                                  padding: const EdgeInsets.only(bottom: 5,right: 5),
-                                  child: TagView(tag, null),
-                                ));
-                              });
-                              return list;
-                            }()
-                        ),
+                          /// 作品タグ表示
+                          Wrap(
+                              children: (){
+                                List<Widget> list = [];
+                                _selectedWork.tags.forEach((tag) {
+                                  list.add(Padding(
+                                    padding: const EdgeInsets.only(bottom: 5,right: 5),
+                                    child: TagView(tag, null),
+                                  ));
+                                });
+                                return list;
+                              }()
+                          ),
 
-                        /// 作品タグ表示
-                        Wrap(
-                            children: (){
-                              List<Widget> list = [];
-                              _selectedWork.stacks.forEach((stack) {
-                                list.add(Padding(
-                                  padding: const EdgeInsets.only(bottom: 5,right: 5),
-                                  child: TagView(stack, Colors.indigoAccent),
-                                ));
-                              });
-                              return list;
-                            }()
-                        ),
+                          /// 作品タグ表示
+                          Wrap(
+                              children: (){
+                                List<Widget> list = [];
+                                _selectedWork.stacks.forEach((stack) {
+                                  list.add(Padding(
+                                    padding: const EdgeInsets.only(bottom: 5,right: 5),
+                                    child: TagView(stack, Colors.indigoAccent),
+                                  ));
+                                });
+                                return list;
+                              }()
+                          ),
 
-                        SizedBox(height: 20,),
+                          const SizedBox(height: 20,),
 
-                        Text(_selectedWork.text,style: Theme.of(context).textTheme.bodyText1,)
-
-                      ],
+                          Expanded(
+                            child: SizedBox(
+                              height: 100,
+                                child: MarkdownView(data: _selectedWork.text,)
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
