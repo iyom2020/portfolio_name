@@ -7,6 +7,7 @@ import 'package:portfolio_name/component/markdown/custom_builder/custom_header4_
 import 'package:portfolio_name/component/markdown/custom_builder/custom_header5_builder.dart';
 import 'package:portfolio_name/component/markdown/custom_builder/custom_header6_builder.dart';
 import 'package:portfolio_name/component/markdown/custom_builder/custom_pre_builder.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MarkdownView extends StatelessWidget {
   const MarkdownView({Key? key, required this.data}) : super(key: key);
@@ -71,6 +72,14 @@ class MarkdownView extends StatelessWidget {
             ),
           ),
         );
+      },
+      onTapLink: (text, href, title) async{
+        if (href != null) {
+          final Uri _url = Uri.parse(href);
+          if (!await launchUrl(_url)) {
+            throw Exception('$_url は開けません');
+          }
+        }
       },
     );
   }
