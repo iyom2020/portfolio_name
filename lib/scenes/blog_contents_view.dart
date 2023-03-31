@@ -22,11 +22,11 @@ class BlogContentsView extends ConsumerStatefulWidget {
 }
 
 class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
-  late final List<Blog> _blogState = ref.watch(blogStateProvider);
+  late List<Blog> _blogState;
   late Blog selectedBlog;
   @override
   Widget build(BuildContext context) {
-    // final List<Blog> _blogState = ref.watch(blogStateProvider);
+    _blogState = ref.watch(blogStateProvider);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -41,7 +41,6 @@ class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
       ),
       /// TODO 404対応する
       body: (existBlog(widget.blogId)) ? _body() : null,
-      // body: _body()
     );
   }
 
