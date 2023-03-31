@@ -821,9 +821,11 @@ class _TopViewState extends ConsumerState<TopView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           /// サムネイル
-          Container(
-            width: 180,
-            height: 120,
+          ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 180,
+              maxHeight: 120,
+            ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: NetworkImageBuilder(ImageUtil().imgDownloadPath(work.imagePath)),
