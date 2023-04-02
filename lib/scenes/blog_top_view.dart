@@ -82,7 +82,7 @@ class _BlogTopViewState extends ConsumerState<BlogTopView> {
                             (MediaQuery.of(context).size.width / 40 < 32)
                                 ? 32
                                 : MediaQuery.of(context).size.width / 40,
-                            letterSpacing: MediaQuery.of(context).size.width / 80,
+                            letterSpacing: MediaQuery.of(context).size.width / 200,
                           ),
                         ),
 

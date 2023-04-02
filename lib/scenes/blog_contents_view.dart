@@ -75,7 +75,7 @@ class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
                   (MediaQuery.of(context).size.width / 25 < 32)
                       ? 32
                       : MediaQuery.of(context).size.width / 25,
-                  letterSpacing: MediaQuery.of(context).size.width / 80,
+                  letterSpacing: MediaQuery.of(context).size.width / 200,
                 ),
               ),
               const SizedBox(height:8),
