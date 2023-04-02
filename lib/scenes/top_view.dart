@@ -671,30 +671,6 @@ class _TopViewState extends ConsumerState<TopView> {
                 height: MediaQuery.of(context).size.width / 15,
               ),
 
-              // Wrap(
-              //   children: (){
-              //     List<Widget> list = [];
-              //     print("WORKSの数：${_workState.length}");
-              //     for(Work work in _workState){
-              //       list.add(
-              //           SizedBox(
-              //             // width: 100,
-              //             height: 500,
-              //             child: InkWell(
-              //               onTap: () {
-              //                 setState(() {
-              //                   _selectedWork = work;
-              //                 });
-              //               },
-              //               child: _workIcon(work),
-              //             ),
-              //           )
-              //       );
-              //     }
-              //     return list;
-              //   }()
-              // ),
-
               SizedBox(
                 height: 600,
                 width: MediaQuery.of(context).size.width / 15 * 11,
@@ -726,6 +702,8 @@ class _TopViewState extends ConsumerState<TopView> {
                   },
                 ),
               ),
+
+              const SizedBox(height: 20,),
 
               (ref.watch(workStateProvider).isNotEmpty) ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -821,14 +799,20 @@ class _TopViewState extends ConsumerState<TopView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           /// サムネイル
-          ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 180,
-              maxHeight: 120,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: NetworkImageBuilder(ImageUtil().imgDownloadPath(work.imagePath)),
+          SizedBox(
+            width: 180,
+            height: 120,
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 180,
+                  maxHeight: 120,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: NetworkImageBuilder(ImageUtil().imgDownloadPath(work.imagePath)),
+                ),
+              ),
             ),
           ),
 
