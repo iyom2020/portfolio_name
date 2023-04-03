@@ -438,16 +438,9 @@ class _TopViewState extends ConsumerState<TopView> {
                             ),
                           ),
                           SizedBox(
-                            height: 173 *
-                                (_toolState.length /
-                                        ((MediaQuery.of(context).size.width /
-                                                    5 *
-                                                    2) /
-                                                150)
-                                            .toInt())
-                                    .ceil()
-                                    .toDouble(),
-                            // height: MediaQuery.of(context).size.width / 9 * 2 - 50,
+                            height: ((MediaQuery.of(context).size.width/5*2) *
+                                11/(((MediaQuery.of(context).size.width/5*2)/150).toInt() *10)+15) *
+                                (_toolState.length/((MediaQuery.of(context).size.width/5*2)/150).toInt()).ceil(),
                             child: GridView.builder(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -460,11 +453,13 @@ class _TopViewState extends ConsumerState<TopView> {
                                 mainAxisSpacing: 15,
                                 // Widget間のスペース（上下）
                                 // crossAxisSpacing: 15,
+                                childAspectRatio: 10/11,
                               ),
                               padding: const EdgeInsets.all(4),
                               itemCount: _languageState.length,
                               itemBuilder: (context, index) {
                                 return SizedBox(
+                                  height: 100,
                                   child: InkWell(
                                     onTap: () {
                                       setState(() {
@@ -488,15 +483,9 @@ class _TopViewState extends ConsumerState<TopView> {
                             ),
                           ),
                           SizedBox(
-                            height: 175 *
-                                (_toolState.length /
-                                        ((MediaQuery.of(context).size.width /
-                                                    5 *
-                                                    2) /
-                                                150)
-                                            .toInt())
-                                    .ceil()
-                                    .toDouble(),
+                            height: ((MediaQuery.of(context).size.width/5*2) *
+                                11/(((MediaQuery.of(context).size.width/5*2)/150).toInt() *10)+15) *
+                                (_toolState.length/((MediaQuery.of(context).size.width/5*2)/150).toInt()).ceil(),
                             child: GridView.builder(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -509,6 +498,7 @@ class _TopViewState extends ConsumerState<TopView> {
                                 mainAxisSpacing: 15,
                                 // Widget間のスペース（上下）
                                 // crossAxisSpacing: 15,
+                                childAspectRatio: 10/11
                               ),
                               padding: const EdgeInsets.all(4),
                               itemCount: _toolState.length,
