@@ -438,7 +438,7 @@ class _TopViewState extends ConsumerState<TopView> {
                             ),
                           ),
                           SizedBox(
-                            height: 160 *
+                            height: 173 *
                                 (_toolState.length /
                                         ((MediaQuery.of(context).size.width /
                                                     5 *
@@ -488,7 +488,7 @@ class _TopViewState extends ConsumerState<TopView> {
                             ),
                           ),
                           SizedBox(
-                            height: 160 *
+                            height: 175 *
                                 (_toolState.length /
                                         ((MediaQuery.of(context).size.width /
                                                     5 *
