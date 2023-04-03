@@ -725,7 +725,7 @@ class _TopViewState extends ConsumerState<TopView> {
                   /// WORK詳細
                   ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.width / 4,
+                      minHeight: MediaQuery.of(context).size.width / 4,
                     ),
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width / 3,
@@ -774,12 +774,13 @@ class _TopViewState extends ConsumerState<TopView> {
 
                           const SizedBox(height: 20,),
 
-                          Expanded(
-                            child: SizedBox(
-                              height: 100,
-                                child: MarkdownView(data: _selectedWork.text,)
-                            ),
-                          ),
+                          // Expanded(
+                          //   child: SizedBox(
+                          //     height: 100,
+                          //       child: MarkdownView(data: _selectedWork.text,)
+                          //   ),
+                          // ),
+                          MarkdownView(data: _selectedWork.text,),
                         ],
                       ),
                     ),

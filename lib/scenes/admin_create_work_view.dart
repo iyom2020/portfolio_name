@@ -602,7 +602,6 @@ class _AdminCreateWorkViewState extends State<AdminCreateWorkView> {
                           /// Markdownに対応させる（やる気があれば）（優先度 低）
                           Container(
                               width: double.infinity,
-                              height: 250,
                               decoration: BoxDecoration(
                                 color: Colors.black26,
                                 borderRadius: BorderRadius.circular(10),

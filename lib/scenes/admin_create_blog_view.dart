@@ -440,7 +440,6 @@ class _AdminCreateBlogViewState extends State<AdminCreateBlogView> {
 
                           Container(
                             width: double.infinity,
-                            height: MediaQuery.of(context).size.height,
                             decoration: BoxDecoration(
                               color: Colors.black26,
                               borderRadius: BorderRadius.circular(10),

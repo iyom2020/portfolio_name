@@ -16,6 +16,7 @@ class MarkdownView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Markdown(
+        shrinkWrap: true,
         data: data,
         selectable: true,
         styleSheet: MarkdownStyleSheet.fromTheme(ThemeData(

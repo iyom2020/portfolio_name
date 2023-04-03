@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:portfolio_name/component/markdown/markdown_view.dart';
 import 'package:portfolio_name/component/popup/default_alert_dialog.dart';
 import 'package:portfolio_name/component/tag/tag_view.dart';
 import 'package:portfolio_name/interface/work.dart';
@@ -587,12 +587,11 @@ class _AdminEditWorkViewState extends ConsumerState<AdminEditWorkView> {
                           /// Markdownに対応させる（やる気があれば）（優先度 低）
                           Container(
                             width: double.infinity,
-                            height: 250,
                             decoration: BoxDecoration(
                               color: Colors.black26,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Markdown(data: workInfoText),
+                            child: MarkdownView(data: workInfoText),
                           ),
                         ],
                       );
