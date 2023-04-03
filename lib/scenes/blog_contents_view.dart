@@ -117,13 +117,7 @@ class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
 
               const SizedBox(height:20),
 
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 3 * 2,
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                    child: MarkdownView(data: selectedBlog.text),
-                ),
-              ),
+              MarkdownView(data: selectedBlog.text),
             ],
           ),
         ),
