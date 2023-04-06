@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio_name/component/markdown/markdown_view.dart';
 import 'package:portfolio_name/component/tag/tag_view.dart';
 import 'package:portfolio_name/interface/skill.dart';
@@ -713,13 +714,16 @@ class _TopViewState extends ConsumerState<TopView> {
                             children: [
                               Text(
                                 _selectedWork.name,
-                                style: TextStyle(
+                                style: GoogleFonts.notoSansJavanese(
+                                  textStyle: const TextStyle(
+                                    height: 1.5,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                   color: Colors.white,
                                   fontSize:
                                   (MediaQuery.of(context).size.width / 40 < 32)
                                       ? 32
-                                      : MediaQuery.of(context).size.width / 40,
-                                  letterSpacing: MediaQuery.of(context).size.width / 80,
+                                      : (MediaQuery.of(context).size.width / 40 > 48) ? 48 : MediaQuery.of(context).size.width / 40,
                                 ),
                               ),
 
