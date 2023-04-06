@@ -25,6 +25,7 @@ class _TopViewState extends ConsumerState<TopView> {
   late final List<Skill> _toolState = ref.watch(skillToolListProvider);
   late Skill _selectedSkill = _languageState[0];
   late final List<Work> _workState = ref.watch(workStateProvider);
+  late int _selectedId = 0;
   late Work _selectedWork = _workState[0];
   
 
@@ -661,13 +662,136 @@ class _TopViewState extends ConsumerState<TopView> {
                 height: MediaQuery.of(context).size.width / 15,
               ),
 
+              (ref.watch(workStateProvider).isNotEmpty) ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    borderRadius: BorderRadius.circular(25),
+                    onTap: (){
+                      setState(() {
+                        if(_selectedId > 0){
+                          _selectedId--;
+                          _selectedWork = _workState[_selectedId];
+                        }
+                      });
+                    },
+                    child: Container(
+                      height: MediaQuery.of(context).size.width / 4,
+                      child: Icon(
+                        Icons.arrow_left_outlined,
+                        size: 50,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// サムネイル
+                      Container(
+                        width: MediaQuery.of(context).size.width / 5*2,
+                        // height: MediaQuery.of(context).size.width / 3,
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: NetworkImageBuilder(ImageUtil().imgDownloadPath(_selectedWork.imagePath))),
+                      ),
+
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 20,
+                      ),
+
+                      /// WORK詳細
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.width / 4,
+                        ),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width / 3,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _selectedWork.name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize:
+                                  (MediaQuery.of(context).size.width / 40 < 32)
+                                      ? 32
+                                      : MediaQuery.of(context).size.width / 40,
+                                  letterSpacing: MediaQuery.of(context).size.width / 80,
+                                ),
+                              ),
+
+                              /// 作品タグ表示
+                              Wrap(
+                                  children: (){
+                                    List<Widget> list = [];
+                                    _selectedWork.tags.forEach((tag) {
+                                      list.add(Padding(
+                                        padding: const EdgeInsets.only(bottom: 5,right: 5),
+                                        child: TagView(tag, null),
+                                      ));
+                                    });
+                                    return list;
+                                  }()
+                              ),
+
+                              /// 作品タグ表示
+                              Wrap(
+                                  children: (){
+                                    List<Widget> list = [];
+                                    _selectedWork.stacks.forEach((stack) {
+                                      list.add(Padding(
+                                        padding: const EdgeInsets.only(bottom: 5,right: 5),
+                                        child: TagView(stack, Colors.indigoAccent),
+                                      ));
+                                    });
+                                    return list;
+                                  }()
+                              ),
+
+                              const SizedBox(height: 20,),
+
+                              MarkdownView(data: _selectedWork.text,),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(25),
+                    onTap: (){
+                      setState(() {
+                        if(_selectedId < _workState.length-1){
+                          _selectedId++;
+                          _selectedWork = _workState[_selectedId];
+                        }
+                      });
+                    },
+                    child: Container(
+                      height: MediaQuery.of(context).size.width / 4,
+                      child: Icon(
+                        Icons.arrow_right_outlined,
+                        size: 50,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ):Container(),
+
+              // const SizedBox(height: 20,),
+
               SizedBox(
-                height: 600,
+                height: 400,
                 width: MediaQuery.of(context).size.width / 15 * 11,
                 child: GridView.builder(
                   gridDelegate:
                   SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 0.7,
+                    childAspectRatio: 6/5,
                     // 横1行あたりに表示するWidgetの数
                     crossAxisCount:
                     ((MediaQuery.of(context).size.width / 15 * 11) /
@@ -684,99 +808,17 @@ class _TopViewState extends ConsumerState<TopView> {
                     return InkWell(
                       onTap: () {
                         setState(() {
+                          _selectedId = index;
                           _selectedWork = _workState[index];
                         });
                       },
-                      child: SizedBox(height: 500,child: _workIcon(_workState[index])),
+                      // child: SizedBox(height: 500,child: _workIcon(_workState[index])),
+                      child: Center(child: _workIcon(_workState[index])),
                     );
                   },
                 ),
               ),
 
-              const SizedBox(height: 20,),
-
-              (ref.watch(workStateProvider).isNotEmpty) ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// サムネイル
-                  Container(
-                    width: MediaQuery.of(context).size.width / 5*2,
-                    // height: MediaQuery.of(context).size.width / 3,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: NetworkImageBuilder(ImageUtil().imgDownloadPath(_selectedWork.imagePath))),
-                  ),
-
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 20,
-                  ),
-
-                  /// WORK詳細
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.width / 4,
-                    ),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _selectedWork.name,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize:
-                              (MediaQuery.of(context).size.width / 40 < 32)
-                                  ? 32
-                                  : MediaQuery.of(context).size.width / 40,
-                              letterSpacing: MediaQuery.of(context).size.width / 80,
-                            ),
-                          ),
-
-                          /// 作品タグ表示
-                          Wrap(
-                              children: (){
-                                List<Widget> list = [];
-                                _selectedWork.tags.forEach((tag) {
-                                  list.add(Padding(
-                                    padding: const EdgeInsets.only(bottom: 5,right: 5),
-                                    child: TagView(tag, null),
-                                  ));
-                                });
-                                return list;
-                              }()
-                          ),
-
-                          /// 作品タグ表示
-                          Wrap(
-                              children: (){
-                                List<Widget> list = [];
-                                _selectedWork.stacks.forEach((stack) {
-                                  list.add(Padding(
-                                    padding: const EdgeInsets.only(bottom: 5,right: 5),
-                                    child: TagView(stack, Colors.indigoAccent),
-                                  ));
-                                });
-                                return list;
-                              }()
-                          ),
-
-                          const SizedBox(height: 20,),
-
-                          // Expanded(
-                          //   child: SizedBox(
-                          //     height: 100,
-                          //       child: MarkdownView(data: _selectedWork.text,)
-                          //   ),
-                          // ),
-                          MarkdownView(data: _selectedWork.text,),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ):Container(),
             ],
           ),
         );
@@ -807,43 +849,43 @@ class _TopViewState extends ConsumerState<TopView> {
             ),
           ),
 
-          /// フレームワーク/言語名
+          /// 作品名
           Text(
             work.name,
             style: const TextStyle(color: Colors.white,fontSize: 16),
           ),
 
-          const SizedBox(height: 4,),
-
-          /// 作品タグ表示
-          Wrap(
-            children: (){
-              List<Widget> list = [];
-              work.tags.forEach((tag) {
-                list.add(Padding(
-                  padding: const EdgeInsets.only(bottom: 5,right: 5),
-                  child: TagView(tag, null),
-                ));
-              });
-              return list;
-            }()
-          ),
-
-          const SizedBox(height: 4,),
-
-          /// 作品タグ表示
-          Wrap(
-              children: (){
-                List<Widget> list = [];
-                work.stacks.forEach((stack) {
-                  list.add(Padding(
-                    padding: const EdgeInsets.only(bottom: 5,right: 5),
-                    child: TagView(stack, Colors.indigoAccent),
-                  ));
-                });
-                return list;
-              }()
-          )
+          // const SizedBox(height: 4,),
+          //
+          // /// 作品タグ表示
+          // Wrap(
+          //   children: (){
+          //     List<Widget> list = [];
+          //     work.tags.forEach((tag) {
+          //       list.add(Padding(
+          //         padding: const EdgeInsets.only(bottom: 5,right: 5),
+          //         child: TagView(tag, null),
+          //       ));
+          //     });
+          //     return list;
+          //   }()
+          // ),
+          //
+          // const SizedBox(height: 4,),
+          //
+          // /// 作品タグ表示
+          // Wrap(
+          //     children: (){
+          //       List<Widget> list = [];
+          //       work.stacks.forEach((stack) {
+          //         list.add(Padding(
+          //           padding: const EdgeInsets.only(bottom: 5,right: 5),
+          //           child: TagView(stack, Colors.indigoAccent),
+          //         ));
+          //       });
+          //       return list;
+          //     }()
+          // )
         ],
       ),
     );
