@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio_name/firebase_options.dart';
 import 'package:portfolio_name/route/router_provider.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -33,8 +34,8 @@ class MyApp extends ConsumerWidget {
         ),
         backgroundColor: const Color.fromRGBO(65, 65, 65, 1),
         dialogBackgroundColor: const Color.fromRGBO(242, 246, 247, 1),
-        textTheme: TextTheme(
-          bodyText1: TextStyle(
+        textTheme: GoogleFonts.notoSansJavaneseTextTheme().copyWith(
+          bodyLarge: const TextStyle(
             color: Colors.white,
             fontSize: 16,
             height: 1.5,

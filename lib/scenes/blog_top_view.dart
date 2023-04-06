@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:portfolio_name/component/tag/tag_view.dart';
 import 'package:portfolio_name/interface/blog.dart';
@@ -76,13 +77,16 @@ class _BlogTopViewState extends ConsumerState<BlogTopView> {
                       children: [
                         Text(
                           _blogState[index].title,
-                          style: TextStyle(
+                          style: GoogleFonts.notoSansJavanese(
+                            textStyle: TextStyle(
+                              height: 1.5,
+                              fontWeight: FontWeight.bold,
+                            ),
                             color: Colors.white,
                             fontSize:
-                            (MediaQuery.of(context).size.width / 40 < 32)
+                            (MediaQuery.of(context).size.width / 25 < 32)
                                 ? 32
-                                : MediaQuery.of(context).size.width / 40,
-                            letterSpacing: MediaQuery.of(context).size.width / 200,
+                                : (MediaQuery.of(context).size.width / 25 > 48) ? 48 : MediaQuery.of(context).size.width / 25,
                           ),
                         ),
 
