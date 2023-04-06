@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:portfolio_name/component/markdown/markdown_view.dart';
 import 'package:portfolio_name/component/tag/tag_view.dart';
@@ -60,7 +61,7 @@ class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
       child: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width / 3 * 2,
+            maxWidth: (MediaQuery.of(context).size.width / 3 * 2 < 750) ? MediaQuery.of(context).size.width / 3 * 2 : 750,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -69,16 +70,18 @@ class _BlogContentsViewState extends ConsumerState<BlogContentsView> {
               const SizedBox(height:20),
               Text(
                 selectedBlog.title,
-                style: TextStyle(
+                style: GoogleFonts.notoSansJavanese(
+                  textStyle: const TextStyle(
+                    height: 1.5,
+                    fontWeight: FontWeight.bold,
+                  ),
                   color: Colors.white,
                   fontSize:
                   (MediaQuery.of(context).size.width / 25 < 32)
                       ? 32
-                      : MediaQuery.of(context).size.width / 25,
-                  letterSpacing: MediaQuery.of(context).size.width / 200,
+                      : (MediaQuery.of(context).size.width / 25 > 48) ? 48 : MediaQuery.of(context).size.width / 25,
                 ),
               ),
-              const SizedBox(height:8),
 
               SizedBox(
                 width: MediaQuery.of(context).size.width / 3 * 2,

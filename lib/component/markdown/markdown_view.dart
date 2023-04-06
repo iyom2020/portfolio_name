@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio_name/component/markdown/custom_builder/custom_header1_builder.dart';
 import 'package:portfolio_name/component/markdown/custom_builder/custom_header2_builder.dart';
 import 'package:portfolio_name/component/markdown/custom_builder/custom_header3_builder.dart';
@@ -20,11 +21,12 @@ class MarkdownView extends StatelessWidget {
         data: data,
         selectable: true,
         styleSheet: MarkdownStyleSheet.fromTheme(ThemeData(
-            textTheme: const TextTheme(
-                bodyText2: TextStyle(
+            textTheme: GoogleFonts.notoSansJavaneseTextTheme().copyWith(
+                bodyMedium: const TextStyle(
+                  height: 2.5,
                     fontSize: 16,
                     color: Colors.white
-                )
+                ),
             ),
 
         )).copyWith(
